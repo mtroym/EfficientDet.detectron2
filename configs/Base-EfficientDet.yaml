@@ -1,0 +1,47 @@
+MODEL:
+    META_ARCHITECTURE: "EfficientDet"
+    BACKBONE:
+        NAME: "build_retinanet_efficient_bifpn_backbone"
+    EFFICIENTDET:
+        NUM_CLASSES: 13
+        SCALE: "d4"
+    EFFICIENT:
+        OUT_FEATURES: ["p3", "p4", "p5"]
+        SCALE: "b4"
+    ANCHOR_GENERATOR:
+        SIZES: !!python/object/apply:eval ["[[x, x * 2**(1.0/3), x * 2**(2.0/3) ] for x in [32, 64, 128, 256, 512]]"]
+    BIFPN:
+        IN_FEATURES: ["p3", "p4", "p5"]
+        SCALE: "d4"
+    RETINANET:
+        IOU_THRESHOLDS: [0.4, 0.5]
+        IOU_LABELS: [0, -1, 1]
+DATASETS:
+    TRAIN: ("deepfashion2_train",)
+    TEST: ("deepfashion2_val",)
+SOLVER:
+    IMS_PER_BATCH: 16
+    BASE_LR: 0.0001  # Note that RetinaNet uses a different default learning rate
+    STEPS: (60000, 80000)
+    MAX_ITER: 90000
+    CHECKPOINT_PERIOD: 2000
+    WARMUP_FACTOR: 0.001
+    WARMUP_ITERS: 0
+INPUT:
+    CROP:
+        ENABLED: True
+        SIZE: [1024, 1024]
+        TYPE: absolute
+    MAX_SIZE_TEST: 20000
+    MAX_SIZE_TRAIN: 20000
+    MIN_SIZE_TRAIN: (1024, )
+    MIN_SIZE_TEST: 1024
+TEST:
+    AUG:
+        ENABLED: True
+        FLIP: True
+        MAX_SIZE: 20000
+        MIN_SIZES: (1024, )
+    EVAL_PERIOD: 2000
+OUTPUT_DIR: "./output/efficientdet-baseline/"
+VERSION: 2
