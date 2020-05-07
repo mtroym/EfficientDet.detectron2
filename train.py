@@ -34,7 +34,8 @@ from detectron2.data import (
 )
 from detectron2.engine import default_argument_parser, default_setup, launch
 from detectron2.evaluation import (
-    CityscapesEvaluator,
+
+    # CityscapesEvaluator,
     COCOEvaluator,
     COCOPanopticEvaluator,
     DatasetEvaluators,
@@ -61,7 +62,8 @@ from src.data import DetDatasetMapper
 
 logger = logging.getLogger("detectron2")
 
-register_all_df2("/mnt/cephfs_new_wj/lab_ad_idea/maoyiming/data")
+
+# register_all_df2("/mnt/cephfs_new_wj/lab_ad_idea/maoyiming/data")
 
 
 def get_evaluator(cfg, dataset_name, output_folder=None):
@@ -89,11 +91,11 @@ def get_evaluator(cfg, dataset_name, output_folder=None):
         evaluator_list.append(COCOEvaluator(dataset_name, cfg, True, output_folder))
     if evaluator_type == "coco_panoptic_seg":
         evaluator_list.append(COCOPanopticEvaluator(dataset_name, output_folder))
-    if evaluator_type == "cityscapes":
-        assert (
-                torch.cuda.device_count() >= comm.get_rank()
-        ), "CityscapesEvaluator currently do not work with multiple machines."
-        return CityscapesEvaluator(dataset_name)
+    # if evaluator_type == "cityscapes":
+    # assert (
+    #         torch.cuda.device_count() >= comm.get_rank()
+    # ), "CityscapesEvaluator currently do not work with multiple machines."
+    # return CityscapesEvaluator(dataset_name)
     if evaluator_type == "pascal_voc":
         return PascalVOCDetectionEvaluator(dataset_name)
     if evaluator_type == "lvis":

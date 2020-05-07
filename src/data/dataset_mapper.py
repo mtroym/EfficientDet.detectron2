@@ -35,7 +35,7 @@ class DetDatasetMapper:
     """
 
     def __init__(self, cfg, is_train=True):
-        if cfg.INPUT.CROP.ENABLED and is_train:
+        if cfg.INPUT.CROP.ENABLED:
             self.crop_gen = T.RandomCrop(cfg.INPUT.CROP.TYPE, cfg.INPUT.CROP.SIZE)
             logging.getLogger(__name__).info("CropGen used in training: " + str(self.crop_gen))
         else:

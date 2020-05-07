@@ -1,1 +1,1 @@
-from src import modeling, config, data
+from . import modeling, config, data
